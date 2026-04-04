@@ -1,0 +1,8 @@
+out/
+dist/
+node_modules/
+*.vsix
+*.zip
+.vscode-test/
+package-output.txt
+vsix-inspect/

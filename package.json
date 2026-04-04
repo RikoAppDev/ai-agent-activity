@@ -1,0 +1,172 @@
+{
+    "name": "ai-agent-activity-for-dc",
+    "displayName": "AI Agent Activity - DC Rich Presence",
+    "description": "Show a custom status when an AI agent is coding for you. Rotating humorous messages, time-based awareness, and manual/auto detection.",
+    "version": "1.0.0",
+    "publisher": "RikoAppDev",
+    "author": {
+        "name": "RikoAppDev"
+    },
+    "license": "SEE LICENSE IN LICENSE",
+    "icon": "icon.png",
+    "pricing": "Free",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/RikoAppDev/ai-agent-activity.git"
+    },
+    "bugs": {
+        "url": "https://github.com/RikoAppDev/ai-agent-activity/issues"
+    },
+    "homepage": "https://github.com/RikoAppDev/ai-agent-activity#readme",
+    "engines": {
+        "vscode": "^1.85.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "galleryBanner": {
+        "color": "#0f0a1e",
+        "theme": "dark"
+    },
+    "extensionKind": [
+        "ui"
+    ],
+    "keywords": [
+        "ai",
+        "agent",
+        "coding",
+        "status",
+        "presence"
+    ],
+    "activationEvents": [
+        "onStartupFinished"
+    ],
+    "main": "./dist/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "agentActivity.toggleAgentMode",
+                "title": "Toggle Agent Mode",
+                "category": "AI Agent Activity"
+            },
+            {
+                "command": "agentActivity.nextMessage",
+                "title": "Next Message",
+                "category": "AI Agent Activity"
+            },
+            {
+                "command": "agentActivity.reconnect",
+                "title": "Reconnect",
+                "category": "AI Agent Activity"
+            },
+            {
+                "command": "agentActivity.openSettings",
+                "title": "Open Settings",
+                "category": "AI Agent Activity"
+            }
+        ],
+        "configuration": {
+            "title": "AI Agent Activity",
+            "properties": {
+                "agentActivity.enabled": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable or disable the AI Agent Activity extension."
+                },
+                "agentActivity.clientId": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Application Client ID for the presence service. Leave empty to use the built-in default."
+                },
+                "agentActivity.detectionStrategy": {
+                    "type": "string",
+                    "enum": [
+                        "manual",
+                        "auto",
+                        "both"
+                    ],
+                    "default": "both",
+                    "enumDescriptions": [
+                        "Only detect agent mode via manual toggle (status bar / command).",
+                        "Only detect agent mode automatically via VS Code Chat API and heuristics.",
+                        "Use both manual toggle and automatic detection."
+                    ],
+                    "description": "How to detect when an AI agent is active."
+                },
+                "agentActivity.messages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "default": [],
+                    "description": "Custom messages to show when agent is active. Leave empty to use defaults. Supports variables: {agent}, {workspace}, {file}, {time}."
+                },
+                "agentActivity.messageRotationInterval": {
+                    "type": "number",
+                    "default": 300,
+                    "minimum": 30,
+                    "description": "Seconds between rotating to the next message (min 30s)."
+                },
+                "agentActivity.timeBasedMessages": {
+                    "type": "object",
+                    "default": {},
+                    "description": "Map time ranges to message arrays. Keys are 'HH-HH' ranges (24h), values are string arrays."
+                },
+                "agentActivity.agentTimeout": {
+                    "type": "number",
+                    "default": 120,
+                    "minimum": 30,
+                    "description": "Seconds of inactivity before automatically ending agent mode (auto detection only)."
+                },
+                "agentActivity.showStatusBar": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show the agent/human mode indicator in the status bar."
+                },
+                "agentActivity.humanModePresence": {
+                    "type": "string",
+                    "enum": [
+                        "none",
+                        "simple",
+                        "detailed"
+                    ],
+                    "default": "none",
+                    "enumDescriptions": [
+                        "Do not show any presence in human mode (let other extensions handle it).",
+                        "Show a simple 'Coding in VS Code' presence.",
+                        "Show file, workspace, and language details."
+                    ],
+                    "description": "What to show when the human is coding. Set to 'none' if you use another presence extension."
+                },
+                "agentActivity.agentName": {
+                    "type": "string",
+                    "default": "AI Agent",
+                    "description": "Name of the agent to use in message templates ({agent} variable)."
+                },
+                "agentActivity.showElapsedTime": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Show elapsed time in the presence status."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run package",
+        "compile": "npm run check-types && node esbuild.js",
+        "check-types": "tsc --noEmit",
+        "watch": "tsc -watch -p ./",
+        "package": "npm run check-types && node esbuild.js --production",
+        "deploy": "vsce publish",
+        "lint": "eslint src --ext ts"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@types/vscode": "^1.85.0",
+        "@typescript-eslint/parser": "^7.0.0",
+        "@vscode/vsce": "^3.0.0",
+        "esbuild": "^0.28.0",
+        "eslint": "^8.56.0",
+        "typescript": "^5.3.0"
+    }
+}

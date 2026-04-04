@@ -1,0 +1,15 @@
+.vscode
+node_modules
+out/
+src/
+assets/
+.github/
+tsconfig.json
+esbuild.js
+**/*.ts
+**/*.map
+.gitignore
+*.txt
+*.vsix
+*.zip
+vsix-inspect/
